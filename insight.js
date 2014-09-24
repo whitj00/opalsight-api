@@ -53,7 +53,7 @@ program.on('--help', function() {
     config.bitcoind.host,
     config.bitcoind.port,
     config.bitcoind.p2pPort,
-    config.bitcoind.dataDir + (config.network === 'testnet' ? '*' : ''), (config.network === 'testnet' ? '* (/testnet3 is added automatically)' : '')
+    config.bitcoind.dataDir + (config.network === 'testnet' ? '*' : ''), (config.network === 'testnet' ? '* (/testnet is added automatically)' : '')
   );
 });
 

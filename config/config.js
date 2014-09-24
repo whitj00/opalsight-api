@@ -25,14 +25,14 @@ if (process.env.INSIGHT_NETWORK === 'livenet') {
   env = 'livenet';
   db = home;
   port = '3000';
-  b_port = '8332';
-  p2p_port = '8333';
+  b_port = '45443';
+  p2p_port = '45444';
 } else {
   env = 'testnet';
   db = home + '/testnet';
   port = '3001';
-  b_port = '18332';
-  p2p_port = '18333';
+  b_port = '55443';
+  p2p_port = '55444';
 }
 port = parseInt(process.env.INSIGHT_PORT) || port;
 
@@ -56,11 +56,11 @@ var isWin = /^win/.test(process.platform);
 var isMac = /^darwin/.test(process.platform);
 var isLinux = /^linux/.test(process.platform);
 if (!dataDir) {
-  if (isWin) dataDir = '%APPDATA%\\Bitcoin\\';
-  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Bitcoin/';
-  if (isLinux) dataDir = process.env.HOME + '/.bitcoin/';
+  if (isWin) dataDir = '%APPDATA%\\Reddcoin\\';
+  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Reddcoin/';
+  if (isLinux) dataDir = process.env.HOME + '/.reddcoin/';
 }
-dataDir += network === 'testnet' ? 'testnet3' : '';
+dataDir += network === 'testnet' ? 'testnet' : '';
 
 var safeConfirmations = process.env.INSIGHT_SAFE_CONFIRMATIONS || 6;
 var ignoreCache = process.env.INSIGHT_IGNORE_CACHE || 0;

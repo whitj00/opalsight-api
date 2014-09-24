@@ -67,7 +67,7 @@ BITCOIND_P2P_HOST     # P2P bitcoind Host (will default to BITCOIND_HOST, if spe
 BITCOIND_P2P_PORT     # P2P bitcoind Port
 BITCOIND_USER         # RPC username
 BITCOIND_PASS         # RPC password
-BITCOIND_DATADIR      # bitcoind datadir. 'testnet3' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
+BITCOIND_DATADIR      # bitcoind datadir. 'testnet' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
 INSIGHT_NETWORK [= 'livenet' | 'testnet']
 INSIGHT_PORT          # insight api port
 INSIGHT_DB            # Path where to store insight's internal DB. (defaults to $HOME/.insight)
