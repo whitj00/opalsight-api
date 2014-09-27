@@ -1,13 +1,25 @@
 {
-  "name": "insight-bitcore-api",
-  "description": "An open-source bitcoin blockchain API. The Insight API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
+  "name": "reddsight-api",
+  "description": "An open-source Reddcoin blockchain API. The Reddsight API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
   "version": "0.2.11",
   "author": {
-    "name": "Ryan X Charles",
-    "email": "ryan@bitpay.com"
+    "name": "Larry Ren",
+    "email": "ren@reddcoin.com"
   },
   "repository": "git://github.com/reddcoin-project/reddsight-api.git",
   "contributors": [
+    {
+      "name": "Andrew Groff",
+      "email": "andrew@reddcoin.com"
+    },
+    {
+      "name": "Mike Croteau",
+      "email": "mike@reddcoin.com"
+    },
+    {
+      "name": "Ryan X Charles",
+      "email": "ryan@bitpay.com"
+    },
     {
       "name": "Matias Alejo Garcia",
       "email": "ematiu@gmail.com"
@@ -35,6 +47,11 @@
   "homepage": "https://github.com/reddcoin-project/reddsight-api",
   "license": "MIT",
   "keywords": [
+    "reddcoin",
+    "reddcore",
+    "reddsight",
+    "reddsight api",
+    "reddcoin api",
     "insight",
     "insight api",
     "blockchain",
