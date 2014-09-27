@@ -54,7 +54,7 @@
     "async": "*",
     "base58-native": "0.1.2",
     "bignum": "*",
-    "bitcore": "git://github.com/reddcoin-project/reddcore.git",
+    "reddcore": "git://github.com/reddcoin-project/reddcore.git",
     "bufferput": "git://github.com/bitpay/node-bufferput.git",
     "buffertools": "*",
     "commander": "^2.3.0",
