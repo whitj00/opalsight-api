@@ -1,43 +1,36 @@
-# *insight API*
+# *Reddsight API*
 
-*insight API* is an open-source bitcoin blockchain REST
-and websocket API. Insight API runs in NodeJS and uses LevelDB for storage. 
+*Reddsight API* is an open-source Reddcoin blockchain REST
+and websocket API. Reddsight API runs in NodeJS and uses LevelDB for storage. 
 
-This is a backend-only service. If you're looking for the web frontend application,
-take a look at https://github.com/bitpay/insight.
+This is a backend-only service. If you're looking for a web frontend application,
+take a look at our official blockchain explorer [Reddsight](https://github.com/reddcoin-project/reddsight).
 
-*Insight API* allows to develop bitcoin-related applications (such as wallets) that 
-require certain information from the blockchain that bitcoind does not provide.
-
-A blockchain explorer front-end has been developed on top of *Insight API*. It can
-be downloaded at [Github Insight Repository](https://github.com/bitpay/insight).
+*Reddsight API* allows everyone to develop Reddcoin-related applications (such as wallets) that 
+require certain information from the blockchain that reddcoind does not provide.
 
 
 ## Prerequisites
 
-* **bitcoind** - Download and Install [Bitcoin](http://bitcoin.org/en/download)
+* **reddcoind** - Download and install [Reddcoin](https://github.com/reddcoin-project/reddcoin).
 
-*insight API* needs a *trusted* bitcoind node to run. *insight API* will connect to the node
-through the RPC API, bitcoin peer-to-peer protocol, and will even read its raw block .dat files for syncing.
+*Reddsight API* needs a *trusted* reddcoind node to run. *Reddsight API* will connect to the node
+through the RPC API, Reddcoin peer-to-peer protocol, and will even read its raw block .dat files for syncing.
 
-Configure bitcoind to listen to RPC calls and set `txindex` to true.
-The easiest way to do this is by copying `./etc/bitcoind/bitcoin.conf` to your
-bitcoin data directory (usually `~/.bitcoin` on Linux, `%appdata%\Bitcoin\` on Windows,
-or `~/Library/Application Support/Bitcoin` on Mac OS X).
-
-bitcoind must be running and must have finished downloading the blockchain **before** running *insight API*.
-
+Configure reddcoind to listen to RPC calls and set `txindex` to true. reddcoind must be running and must have
+finished downloading the blockchain **before** running *Reddsight API*.
 
 * **Node.js v0.10.x** - Download and Install [Node.js](http://www.nodejs.org/download/).
 
-* **NPM** - Node.js package manager, should be automatically installed when you get node.js.
+* **NPM** - Node.js package manager, should be automatically installed when you get Node.js.
+
 
 ## Quick Install
   Check the Prerequisites section above before installing.
 
-  To install Insight API, clone the main repository:
+  To install *Reddsight API*, clone the main repository:
 
-    $ git clone https://github.com/bitpay/insight-api && cd insight-api
+    $ git clone https://github.com/reddcoin-project/reddsight-api.git && cd reddsight-api
 
   Install dependencies:
 
@@ -49,28 +42,30 @@ bitcoind must be running and must have finished downloading the blockchain **bef
 
   Then open a browser and go to:
 
-    http://localhost:3001
+    http://localhost:3000
 
   Please note that the app will need to sync its internal database
   with the blockchain state, which may take some time. You can check
-  sync progress at http://localhost:3001/api/sync.
+  sync progress at http://localhost:3000/api/sync.
 
 
 ## Configuration
 
-All configuration is specified in the [config](config/) folder, particularly the [config.js](config/config.js) file. There you can specify your application name and database name. Certain configuration values are pulled from environment variables if they are defined:
+All configuration is specified in the [config](config/) folder, particularly the [config.js](config/config.js) file.
+There you can specify your application name and database name. Certain configuration values are pulled from environment
+variables if they are defined:
 
 ```
-BITCOIND_HOST         # RPC bitcoind host
-BITCOIND_PORT         # RPC bitcoind Port
-BITCOIND_P2P_HOST     # P2P bitcoind Host (will default to BITCOIND_HOST, if specified)
-BITCOIND_P2P_PORT     # P2P bitcoind Port
+BITCOIND_HOST         # RPC reddcoind host
+BITCOIND_PORT         # RPC reddcoind Port
+BITCOIND_P2P_HOST     # P2P reddcoind Host (will default to BITCOIND_HOST, if specified)
+BITCOIND_P2P_PORT     # P2P reddcoind Port
 BITCOIND_USER         # RPC username
 BITCOIND_PASS         # RPC password
-BITCOIND_DATADIR      # bitcoind datadir. 'testnet' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
+BITCOIND_DATADIR      # reddcoind datadir. 'testnet' will be appended automatically if testnet is used. NEED to finish with '/'. e.g: `/vol/data/`
 INSIGHT_NETWORK [= 'livenet' | 'testnet']
 INSIGHT_PORT          # insight api port
-INSIGHT_DB            # Path where to store insight's internal DB. (defaults to $HOME/.insight)
+INSIGHT_DB            # Path where to store the internal DB. (defaults to $HOME/.reddsight)
 INSIGHT_SAFE_CONFIRMATIONS=6  # Nr. of confirmation needed to start caching transaction information   
 INSIGHT_IGNORE_CACHE  # True to ignore cache of spents in transaction, with more than INSIGHT_SAFE_CONFIRMATIONS confirmations. This is useful for tracking double spents for old transactions.
 ENABLE_MAILBOX # if "true" will enable mailbox plugin
@@ -82,33 +77,37 @@ ENABLE_HTTPS # if "true" it will server using SSL/HTTPS
 
 ```
 
-Make sure that bitcoind is configured to [accept incoming connections using 'rpcallowip'](https://en.bitcoin.it/wiki/Running_Bitcoin).
+Make sure that reddcoind is configured to [accept incoming connections using 'rpcallowip'](https://en.bitcoin.it/wiki/Running_Bitcoin).
 
 In case the network is changed (testnet to livenet or vice versa) levelDB database needs to be deleted. This can be performed running:
-```util/sync.js -D``` and waiting for *insight* to synchronize again.  Once the database is deleted, the sync.js process can be safely interrupted (CTRL+C) and continued from the synchronization process embedded in main app.
+```util/sync.js -D``` and waiting for *Reddsight API* to synchronize again.  Once the database is deleted,
+the sync.js process can be safely interrupted (CTRL+C) and continued from the synchronization process embedded in main app.
+
 
 ## Synchronization
 
-The initial synchronization process scans the blockchain from the paired bitcoind server to update addresses and balances. *insight-api* needs exactly one trusted bitcoind node to run. This node must have finished downloading the blockchain before running *insight-api*.
+The initial synchronization process scans the blockchain from the paired reddcoind server to update addresses and balances.
+*reddsight-api* needs exactly one trusted reddcoind node to run. This node must have finished downloading the blockchain
+before running *reddsight-api*.
 
-While *insight* is synchronizing the website can be accessed (the sync process is embedded in the webserver), but there may be missing data or incorrect balances for addresses. The 'sync' status is shown at the `/api/sync` endpoint.
+While *reddsight-api* is synchronizing the website can be accessed (the sync process is embedded in the webserver),
+but there may be missing data or incorrect balances for addresses. The 'sync' status is shown at the `/api/sync` endpoint.
 
-The blockchain can be read from bitcoind's raw `.dat` files or RPC interface. 
+The blockchain can be read from reddcoind's raw `.dat` files or RPC interface. 
 Reading the information from the `.dat` files is much faster so it's the
 recommended (and default) alternative. `.dat` files are scanned in the default
-location for each platform (for example, `~/.bitcoin` on Linux). In case a
+location for each platform (for example, `~/.reddcoin` on Linux). In case a
 non-standard location is used, it needs to be defined (see the Configuration section).
-As of June 2014, using `.dat` files the sync process takes 9 hrs.
-for livenet and 30 mins. for testnet.
 
-While synchronizing the blockchain, *insight-api* listens for new blocks and
-transactions relayed by the bitcoind node. Those are also stored on *insight-api*'s database.
-In case *insight-api* is shutdown for a period of time, restarting it will trigger
+While synchronizing the blockchain, *reddsight-api* listens for new blocks and
+transactions relayed by the reddcoind node. Those are also stored on *reddsight-api*'s database.
+In case *reddsight-api* is shutdown for a period of time, restarting it will trigger
 a partial (historic) synchronization of the blockchain. Depending on the size of
 that synchronization task, a reverse RPC or forward `.dat` syncing strategy will be used.
 
-If bitcoind is shutdown, *insight-api* needs to be stopped and restarted
-once bitcoind is restarted.
+If reddcoind is shutdown, *reddsight-api* needs to be stopped and restarted
+once reddcoind is restarted.
+
 
 ### Syncing old blockchain data manually
 
@@ -116,27 +115,26 @@ once bitcoind is restarted.
 
     $ util/sync.js
 
-  Check util/sync.js --help for options, particulary -D to erase the current DB.
+  Check util/sync.js --help for options, particularly -D to erase the current DB.
 
   *NOTE*: there is no need to run this manually since the historic synchronization
-  is built in into the web application. Running *insight-api* normally will trigger
+  is built in into the web application. Running *reddsight-api* normally will trigger
   the historic sync automatically.
 
 
 ### DB storage requirement
 
-To store the blockchain and address related information, *insight-api* uses LevelDB.
+To store the blockchain and address related information, *reddsight-api* uses LevelDB.
 Two DBs are created: txs and blocks. By default these are stored on
 
-  ``~/.insight/``
+  ``~/.reddsight/``
 
-Please note that some older versions of Insight-API store that on `<insight's root>/db`.
+This can be changed at config/config.js.
 
-This can be changed at config/config.js. As of June 2014, storing the livenet blockchain takes ~35GB of disk space (2GB for the testnet).
 
 ## Development
 
-To run insight locally for development with grunt:
+To run *reddsight-api* locally for development with grunt:
 
 ```$ NODE_ENV=development grunt```
 
@@ -145,7 +143,7 @@ To run the tests
 ```$ grunt test```
 
 
-Contributions and suggestions are welcome at [insight-api github repository](https://github.com/bitpay/insight-api).
+Contributions and suggestions are welcome at [reddsight-api github repository](https://github.com/reddcoin-project/reddsight-api).
 
 ## Caching schema
 
@@ -163,7 +161,7 @@ to ignore the cache in a particular API request.
 
 ## API
 
-By default, insight provides a REST API at `/api`, but this prefix is configurable from the var `apiPrefix` in the `config.js` file.
+By default, *reddsight-api* provides a REST API at `/api`, but this prefix is configurable from the var `apiPrefix` in the `config.js` file.
 
 The end-points are:
 
@@ -219,8 +217,9 @@ Sample return:
     }
 ]
 ```
-Please note that in case confirmations are cached (which happens by default when the number of confirmations is bigger that INSIGHT_SAFE_CONFIRMATIONS) the response will include the pair confirmationsFromCache:true, and confirmations will equal INSIGHT_SAFE_CONFIRMATIONS. See noCache and INSIGHT_IGNORE_CACHE options for details.
-
+Please note that in case confirmations are cached (which happens by default when the number of confirmations is bigger
+that INSIGHT_SAFE_CONFIRMATIONS) the response will include the pair confirmationsFromCache:true, and confirmations will
+equal INSIGHT_SAFE_CONFIRMATIONS. See noCache and INSIGHT_IGNORE_CACHE options for details.
 
 
 ### Unspent Outputs for multiple addresses
@@ -287,7 +286,7 @@ POST response:
   /api/peer
 ```
 
-### Status of the bitcoin network
+### Status of the Reddcoin network
 ```
   /api/status?q=xxx
 ```
@@ -303,7 +302,7 @@ Where "xxx" can be:
 ## Web Socket API
 The web socket API is served using [socket.io](http://socket.io).
 
-The following are the events published by insight:
+The following are the events published by *Reddsight API*:
 
 'tx': new transaction received from network. This event is published in the 'inv' room. Data will be a app/models/Transaction object.
 Sample output:
@@ -326,7 +325,7 @@ Sample output:
 }
 ```
 
-'<bitcoinAddress>': new transaction concerning <bitcoinAddress> received from network. This event is published in the '<bitcoinAddress>' room.
+'<reddcoinAddress>': new transaction concerning <reddcoinAddress> received from network. This event is published in the '<reddcoinAddress>' room.
 
 'status': every 1% increment on the sync task, this event will be triggered. This event is published in the 'sync' room.
 
@@ -346,18 +345,18 @@ Sample output:
 
 ### Example Usage
 
-The following html page connects to the socket.io insight API and listens for new transactions.
+The following html page connects to the socket.io Reddsight API and listens for new transactions.
 
 html
 ```
 <html>
 <body>
-  <script src="http://<insight-server>:<port>/socket.io/socket.io.js"></script>
+  <script src="http://<reddsight-server>:<port>/socket.io/socket.io.js"></script>
   <script>
     eventToListenTo = 'tx'
     room = 'inv'
 
-    var socket = io("http://<insight-server>:<port>/");
+    var socket = io("http://<reddsight-server>:<port>/");
     socket.on('connect', function() {
       // Join the room.
       socket.emit('subscribe', room);
