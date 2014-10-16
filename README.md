@@ -351,12 +351,12 @@ html
 ```
 <html>
 <body>
-  <script src="http://<reddsight-server>:<port>/socket.io/socket.io.js"></script>
+  <script src="http://live.reddcoin.com/socket.io/socket.io.js"></script>
   <script>
     eventToListenTo = 'tx'
     room = 'inv'
 
-    var socket = io("http://<reddsight-server>:<port>/");
+    var socket = io("http://live.reddcoin.com/");
     socket.on('connect', function() {
       // Join the room.
       socket.emit('subscribe', room);
