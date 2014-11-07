@@ -93,8 +93,39 @@ Address.prototype.getObj = function() {
   };
 };
 
+Address.prototype._addSpentStake = function(txOut, cb) {
+    var length = txOut.length,
+        added = 0,
+        done = function(){
+            added++;
+            if(added >= length){
+                cb();
+            }
+        };
+
+    txOut.forEach(function(txItem, i){
+        var needsSpentCoinStake = txItem.isConfirmed && txItem.spentTxId && !txItem.spentIsConfirmed;
+        txItem.spentIsCoinstake = null;
+
+        if(!needsSpentCoinStake){
+            done();
+            return;
+        }
+
+        TransactionDb.fromIdWithInfo(txItem.spentTxId, function(err, tx) {
+            if (err || ! tx)
+                return common.handleErrors(err, res);
+            else {
+                txItem.spentIsCoinstake = tx.info.isCoinStake
+                done();
+            }
+        });
+
+    });
+};
+
 Address.prototype._addTxItem = function(txItem, txList) {
-  var add=0, addSpend=0;
+  var add=0, addSpend= 0;
   var v = txItem.value_sat;
   var seen = this.seen;
 
@@ -124,7 +155,10 @@ Address.prototype._addTxItem = function(txItem, txList) {
     }
     else if(!txItem.spentIsConfirmed) {
       // unspent
-      this.balanceSat   += v;
+      if(!txItem.spentIsCoinstake){
+        this.balanceSat   += v;
+      }
+
       this.unconfirmedBalanceSat -= v;
       this.unconfirmedTxApperances += addSpend;
     }
@@ -187,13 +221,16 @@ Address.prototype.update = function(next, opts) {
           });
         }
         else {
-          txOut.forEach(function(txItem){
-            self._addTxItem(txItem, txList);
-          });
-          if (txList) 
-            self.transactions = txList;
+          self._addSpentStake(txOut, function(){
 
-          return next();
+              txOut.forEach(function(txItem){
+                  self._addTxItem(txItem, txList);
+              });
+              if (txList)
+                  self.transactions = txList;
+
+              return next();
+          });
         }
       });
     });
@@ -201,4 +238,3 @@ Address.prototype.update = function(next, opts) {
 };
 
 module.exports = require('soop')(Address);
-
