@@ -156,7 +156,7 @@ Address.prototype.update = function(next, opts) {
 
   var tDb   = TransactionDb;
   var bDb   = BlockDb;
-  tDb.fromAddr(self.addrStr, opts, function(err,txOut){
+  tDb.fromAddr(self.addrStr, opts, function(err, txOut){
     if (err) return next(err);
 
     bDb.fillConfirmations(txOut, function(err) {
@@ -166,9 +166,7 @@ Address.prototype.update = function(next, opts) {
 // console.log('[Address.js.161:txOut:]',txOut); //TODO
         if (err) return next(err);
         if (opts.onlyUnspent) {
-          txOut  = txOut.filter(function(x){
-            return !x.spentTxId;
-          });
+          txOut = txOut.filter(function(x) { return !x.spentTxId; });
           tDb.fillScriptPubKey(txOut, function() {
             self.unspent = txOut.map(function(x){
               return {
@@ -179,7 +177,7 @@ Address.prototype.update = function(next, opts) {
                 scriptPubKey: x.scriptPubKey,
                 amount: x.value_sat / BitcoreUtil.COIN,
                 confirmations: x.isConfirmedCached ? (config.safeConfirmations) : x.confirmations,
-                confirmationsFromCache: !!x.isConfirmedCached,
+                confirmationsFromCache: !!x.isConfirmedCached
               };
             });
             return next();
