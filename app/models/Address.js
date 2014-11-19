@@ -39,7 +39,7 @@ function Address(addrStr) {
     set:  function(i) {
       this.totalSentSat =  i * BitcoreUtil.COIN;
     },
-    enumerable: 1,
+    enumerable: 1
   });
 
   Object.defineProperty(this, 'balance', {
@@ -49,7 +49,7 @@ function Address(addrStr) {
     set:  function(i) {
       this.balance =   i * BitcoreUtil.COIN;
     },
-    enumerable: 1,
+    enumerable: 1
   });
 
   Object.defineProperty(this, 'totalReceived', {
@@ -59,7 +59,7 @@ function Address(addrStr) {
     set:  function(i) {
       this.totalReceived =  i * BitcoreUtil.COIN;
     },
-    enumerable: 1,
+    enumerable: 1
   });
 
 
@@ -70,7 +70,7 @@ function Address(addrStr) {
     set:  function(i) {
       this.unconfirmedBalanceSat =  i * BitcoreUtil.COIN;
     },
-    enumerable: 1,
+    enumerable: 1
   });
 
 }
@@ -91,37 +91,6 @@ Address.prototype.getObj = function() {
     'txApperances':             this.txApperances,
     'transactions':             this.transactions
   };
-};
-
-Address.prototype._addSpentStake = function(txOut, cb) {
-    var length = txOut.length,
-        added = 0,
-        done = function(){
-            added++;
-            if(added >= length){
-                cb();
-            }
-        };
-
-    txOut.forEach(function(txItem, i){
-        var needsSpentCoinStake = txItem.isConfirmed && txItem.spentTxId && !txItem.spentIsConfirmed;
-        txItem.spentIsCoinstake = null;
-
-        if(!needsSpentCoinStake){
-            done();
-            return;
-        }
-
-        TransactionDb.fromIdWithInfo(txItem.spentTxId, function(err, tx) {
-            if (err || ! tx)
-                return common.handleErrors(err, res);
-            else {
-                txItem.spentIsCoinstake = tx.info.isCoinStake
-                done();
-            }
-        });
-
-    });
 };
 
 Address.prototype._addTxItem = function(txItem, txList) {
@@ -149,16 +118,12 @@ Address.prototype._addTxItem = function(txItem, txList) {
   if (txItem.isConfirmed) {
     this.txApperances += add;
     this.totalReceivedSat += v;
-    if (! txItem.spentTxId ) {
+    if (!txItem.spentTxId) {
       //unspent
       this.balanceSat   += v;
-    }
-    else if(!txItem.spentIsConfirmed) {
+    } else if(!txItem.spentIsConfirmed) {
       // unspent
-      if(!txItem.spentIsCoinstake){
-        this.balanceSat   += v;
-      }
-
+      this.balanceSat += v;
       this.unconfirmedBalanceSat -= v;
       this.unconfirmedTxApperances += addSpend;
     }
@@ -221,16 +186,13 @@ Address.prototype.update = function(next, opts) {
           });
         }
         else {
-          self._addSpentStake(txOut, function(){
-
-              txOut.forEach(function(txItem){
-                  self._addTxItem(txItem, txList);
-              });
-              if (txList)
-                  self.transactions = txList;
-
-              return next();
+          txOut.forEach(function(txItem){
+              self._addTxItem(txItem, txList);
           });
+          if (txList)
+              self.transactions = txList;
+
+          return next();
         }
       });
     });
