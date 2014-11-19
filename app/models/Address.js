@@ -182,10 +182,9 @@ Address.prototype.update = function(next, opts) {
             });
             return next();
           });
-        }
-        else {
+        } else {
           txOut.forEach(function(txItem){
-              self._addTxItem(txItem, txList);
+            self._addTxItem(txItem, txList);
           });
           if (txList)
               self.transactions = txList;
