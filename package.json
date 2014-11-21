@@ -1,20 +1,20 @@
 {
-  "name": "reddsight-api",
-  "description": "An open-source Reddcoin blockchain API. The Reddsight API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
-  "version": "0.2.11",
+  "name": "opalsight-api",
+  "description": "An open-source Opalcoin blockchain API. The Opalsight API provides you with a convenient, powerful and simple way to query and broadcast data on the bitcoin network and build your own services with it.",
+  "version": "0.2.12",
   "author": {
     "name": "Larry Ren",
-    "email": "ren@reddcoin.com"
+    "email": "ren@opalcoin.com"
   },
-  "repository": "git://github.com/reddcoin-project/reddsight-api.git",
+  "repository": "git://github.com/opalcoin/opalsight-api.git",
   "contributors": [
     {
       "name": "Andrew Groff",
-      "email": "andrew@reddcoin.com"
+      "email": "andrew@opalcoin.com"
     },
     {
       "name": "Mike Croteau",
-      "email": "mike@reddcoin.com"
+      "email": "mike@opalcoin.com"
     },
     {
       "name": "Ryan X Charles",
@@ -42,16 +42,16 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/reddcoin-project/reddsight-api/issues"
+    "url": "https://github.com/opalcoin/opalsight-api/issues"
   },
-  "homepage": "https://github.com/reddcoin-project/reddsight-api",
+  "homepage": "https://github.com/opalcoin/opalsight-api",
   "license": "MIT",
   "keywords": [
-    "reddcoin",
-    "reddcore",
-    "reddsight",
-    "reddsight api",
-    "reddcoin api",
+    "opalcoin",
+    "opalcore",
+    "opalsight",
+    "opalsight api",
+    "opalcoin api",
     "insight",
     "insight api",
     "blockchain",
@@ -72,7 +72,7 @@
     "base58-native": "0.1.2",
     "bignum": "*",
     "bitauth": "^0.1.1",
-    "reddcore": "git://github.com/reddcoin-project/reddcore.git",
+    "opalcore": "git://github.com/opalcoin/opalcore.git",
     "bufferput": "git://github.com/bitpay/node-bufferput.git",
     "buffertools": "*",
     "commander": "^2.3.0",

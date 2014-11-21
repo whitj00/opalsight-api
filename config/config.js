@@ -19,14 +19,14 @@ function getUserHome() {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-var home = process.env.INSIGHT_DB || (getUserHome() + '/.reddsight');
+var home = process.env.INSIGHT_DB || (getUserHome() + '/.opalsight');
 
 if (process.env.INSIGHT_NETWORK === 'livenet') {
   env = 'livenet';
   db = home;
   port = '3000';
-  b_port = '45443';
-  p2p_port = '45444';
+  b_port = '51990';
+  p2p_port = '50990';
 } else {
   env = 'testnet';
   db = home + '/testnet';
@@ -49,16 +49,16 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
-var network = process.env.INSIGHT_NETWORK || 'testnet';
+var network = process.env.INSIGHT_NETWORK || 'livenet';
 
 var dataDir = process.env.BITCOIND_DATADIR;
 var isWin = /^win/.test(process.platform);
 var isMac = /^darwin/.test(process.platform);
 var isLinux = /^linux/.test(process.platform);
 if (!dataDir) {
-  if (isWin) dataDir = '%APPDATA%\\Reddcoin\\';
-  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Reddcoin/';
-  if (isLinux) dataDir = process.env.HOME + '/.reddcoin/';
+  if (isWin) dataDir = '%APPDATA%\\Opalcoin\\';
+  if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Opalcoin/';
+  if (isLinux) dataDir = process.env.HOME + '/.opalcoin/';
 }
 dataDir += network === 'testnet' ? 'testnet' : '';
 
